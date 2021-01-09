@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     // Start is called before the first frame update
+    public GameObject powerupIndicator;
     public float speed = 5.0f;
     public bool hasPowerup;
     private Rigidbody playerRb;
@@ -21,6 +22,7 @@ public class PlayerController : MonoBehaviour
     {
         float forwardInput = Input.GetAxis("Vertical");
         playerRb.AddForce(focalPoint.transform.forward * speed * forwardInput);
+        powerupIndicator.transform.position = transform.position;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -30,6 +32,7 @@ public class PlayerController : MonoBehaviour
             hasPowerup = true;
             Destroy(other.gameObject);
             StartCoroutine(PowerupCountdownRoutine());
+            powerupIndicator.gameObject.SetActive(true);
         }
     }
 
@@ -48,5 +51,6 @@ public class PlayerController : MonoBehaviour
     {
        yield return new WaitForSeconds(7); 
        hasPowerup = false;
+       powerupIndicator.gameObject.SetActive(false);
     }
 }
